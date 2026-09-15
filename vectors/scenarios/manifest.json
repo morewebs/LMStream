@@ -1,0 +1,271 @@
+{
+  "version": "1.0",
+  "category": "scenario",
+  "count": 8,
+  "vectors": [
+    {
+      "id": "scenario-1-golden-happy-path",
+      "description": "Full happy path session exchange",
+      "steps": [
+        {
+          "direction": "S->C",
+          "description": "Server emits SETTINGS handshake",
+          "raw_hex": "000000000f00120001ffff000000001000983a00006400000000",
+          "expected_client_state": "ESTABLISHED"
+        },
+        {
+          "direction": "C->S",
+          "description": "Client initiates session on StreamID 1",
+          "raw_hex": "01000000010012007b226d6f64656c223a226770742d346f227d",
+          "expected_client_state": "OPENING"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server acknowledges session",
+          "raw_hex": "0100000002000c000100000006006770742d346f",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server streams reasoning block",
+          "raw_hex": "010000000401140000436865636b696e6720776561746865722e2e2e",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server starts tool invocation",
+          "raw_hex": "010000000500200000000001060b0063616c6c5f316765745f776561746865727b2263697479223a",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server completes tool invocation",
+          "raw_hex": "0100000005000c0000000004225061726973227d",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server emits cumulative token usage",
+          "raw_hex": "0100000006001400190000000e000000270000000000000001000000",
+          "expected_client_state": "TERMINATING"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server emits performance telemetry",
+          "raw_hex": "01000000070014005f00000054010000f02300008877665544332211",
+          "expected_client_state": "TERMINATING"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server terminates session cleanly with STOP",
+          "raw_hex": "01000000080002000000",
+          "expected_client_state": "TERMINATED"
+        }
+      ]
+    },
+    {
+      "id": "scenario-2-pause-resume",
+      "description": "Client pause and clean resume flow",
+      "steps": [
+        {
+          "direction": "S->C",
+          "description": "Server emits first content chunk",
+          "raw_hex": "0100000003010800004368756e6b2031",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "C->S",
+          "description": "Client pauses session",
+          "raw_hex": "010000000b000000",
+          "expected_client_state": "PAUSED"
+        },
+        {
+          "direction": "C->S",
+          "description": "Client resumes session",
+          "raw_hex": "010000000c000000",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server delivers drained chunk in FIFO order",
+          "raw_hex": "0100000003010800004368756e6b2032",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server concludes session",
+          "raw_hex": "01000000080002000000",
+          "expected_client_state": "TERMINATED"
+        }
+      ]
+    },
+    {
+      "id": "scenario-3-pause-overflow",
+      "description": "Session termination on pause buffer overflow",
+      "steps": [
+        {
+          "direction": "C->S",
+          "description": "Client pauses session",
+          "raw_hex": "010000000b000000",
+          "expected_client_state": "PAUSED"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server emits session-scoped ERROR 1006 on buffer overflow",
+          "raw_hex": "0100000009001000ee030000000008004f766572666c6f77",
+          "expected_client_state": "TERMINATED"
+        }
+      ]
+    },
+    {
+      "id": "scenario-4-pause-ttl-expiry",
+      "description": "Session termination on pause retention TTL expiry",
+      "steps": [
+        {
+          "direction": "C->S",
+          "description": "Client pauses session",
+          "raw_hex": "010000000b000000",
+          "expected_client_state": "PAUSED"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server emits session-scoped ERROR 1009 when retention TTL expires",
+          "raw_hex": "0100000009001700f103000000000f0053657373696f6e2045787069726564",
+          "expected_client_state": "TERMINATED"
+        }
+      ]
+    },
+    {
+      "id": "scenario-5-dynamic-steer",
+      "description": "Dynamic client prompt steering mid-stream",
+      "steps": [
+        {
+          "direction": "S->C",
+          "description": "Server streams initial tokens",
+          "raw_hex": "0100000003011c000054686520686973746f7279206f6620636f6d7075746572732e2e2e",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "C->S",
+          "description": "Client issues mid-generation steering instruction",
+          "raw_hex": "010000000d000c000a00626520636f6e63697365",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server streams post-steer concise continuation",
+          "raw_hex": "0100000003012400000a42726965666c793a20696e76656e74656420696e20323074682063656e747572792e",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server terminates cleanly",
+          "raw_hex": "01000000080002000000",
+          "expected_client_state": "TERMINATED"
+        }
+      ]
+    },
+    {
+      "id": "scenario-6-rewind-failover",
+      "description": "Rewind rollback discarding partial tool call",
+      "steps": [
+        {
+          "direction": "S->C",
+          "description": "Server starts speculative tool call",
+          "raw_hex": "0100000005001a000000000106080063616c6c5f786261645f746f6f6c7b2261223a",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server rolls back and discards partial tool call",
+          "raw_hex": "010000000e0008000500000000000000",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server emits valid content following rollback",
+          "raw_hex": "010000000301120000436f7272656374656420616e737765722e",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server completes session",
+          "raw_hex": "01000000080002000000",
+          "expected_client_state": "TERMINATED"
+        }
+      ]
+    },
+    {
+      "id": "scenario-7-interleaved-multiplexing",
+      "description": "Two interleaved concurrent streams on single connection",
+      "steps": [
+        {
+          "direction": "C->S",
+          "description": "Client opens StreamID 1",
+          "raw_hex": "01000000010012007b226d6f64656c223a226770742d346f227d",
+          "expected_client_state": "OPENING"
+        },
+        {
+          "direction": "C->S",
+          "description": "Client opens StreamID 3 concurrently",
+          "raw_hex": "03000000010012007b226d6f64656c223a22636c61756465227d",
+          "expected_client_state": "OPENING"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server acks StreamID 1",
+          "raw_hex": "0100000002000c000100000006006770742d346f",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server acks StreamID 3",
+          "raw_hex": "0300000002000c00030000000600636c61756465",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server emits content on StreamID 1",
+          "raw_hex": "0100000003010f000053747265616d203120746f6b656e",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server interleaves content on StreamID 3",
+          "raw_hex": "0300000003010f000053747265616d203320746f6b656e",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server terminates StreamID 1",
+          "raw_hex": "01000000080002000000",
+          "expected_client_state": "TERMINATED"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server continues and terminates StreamID 3",
+          "raw_hex": "03000000080002000000",
+          "expected_client_state": "TERMINATED"
+        }
+      ]
+    },
+    {
+      "id": "scenario-8-connection-teardown",
+      "description": "Connection-level protocol violation teardown",
+      "steps": [
+        {
+          "direction": "C->S",
+          "description": "Client sends frame with reserved flag bit set",
+          "raw_hex": "01000000030809000042616420666c6167",
+          "expected_client_state": "ACTIVE"
+        },
+        {
+          "direction": "S->C",
+          "description": "Server emits connection-level ERROR 1008 and tears down transport",
+          "raw_hex": "0000000009001a00f00300000001120050726f746f636f6c2056696f6c6174696f6e",
+          "expected_client_state": "CLOSED"
+        }
+      ]
+    }
+  ]
+}
