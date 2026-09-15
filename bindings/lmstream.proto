@@ -1,0 +1,17 @@
+syntax = "proto3";
+package lmstream.v1;
+
+// One raw LMStream frame (8-byte header + payload), opaque to gRPC.
+message Frame {
+  bytes frame = 1;  // MUST NOT exceed 65,535 bytes; MUST NOT be gRPC-compressed.
+}
+
+service LMStream {
+  // Connection lifetime. StreamID-0 frames only:
+  // server's first message is SETTINGS; then PING/PONG, connection ERROR.
+  rpc Control(stream Frame) returns (stream Frame);
+
+  // One call per LMStream session. First client message is OPEN.
+  // Every frame carries the session StreamID; receivers validate it.
+  rpc Session(stream Frame) returns (stream Frame);
+}

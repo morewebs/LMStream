@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LMStreamTestVectorManifest",
+  "description": "Schema for LMStream test vector manifests (golden, invalid, edge, scenario)",
+  "type": "object",
+  "required": ["version", "category", "vectors"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "enum": ["1.0"]
+    },
+    "category": {
+      "type": "string",
+      "enum": ["golden", "invalid", "edge", "scenario"]
+    },
+    "description": {
+      "type": "string"
+    },
+    "vectors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "description"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "raw_hex": {
+            "type": "string",
+            "description": "Lower-case hex string representing the wire frame bytes"
+          },
+          "frame": {
+            "type": "object",
+            "properties": {
+              "stream_id": { "type": "integer" },
+              "opcode": { "type": "string" },
+              "flags": { "type": "integer" },
+              "length": { "type": "integer" },
+              "payload": { "type": "object" }
+            }
+          },
+          "expected_error": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "integer" },
+              "scope": { "type": "string", "enum": ["session", "connection"] }
+            }
+          },
+          "steps": {
+            "type": "array",
+            "description": "Ordered frame exchange steps for scenario vectors",
+            "items": {
+              "type": "object",
+              "required": ["direction", "raw_hex"],
+              "properties": {
+                "direction": { "type": "string", "enum": ["C->S", "S->C"] },
+                "description": { "type": "string" },
+                "raw_hex": { "type": "string" },
+                "expected_client_state": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

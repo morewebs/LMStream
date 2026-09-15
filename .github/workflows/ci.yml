@@ -1,0 +1,103 @@
+name: BStream Specification & Reference CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  typescript-and-vectors:
+    name: TypeScript Codec, Vector Generator & Interop
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        working-directory: examples/typescript
+        run: npm ci
+
+      - name: Run TypeScript unit tests
+        working-directory: examples/typescript
+        run: npm test
+
+      - name: Regenerate binary test vectors & verify diff
+        working-directory: examples/typescript
+        run: |
+          npm run generate-vectors
+          git diff --exit-code ../../vectors
+
+      - name: Verify SPEC.md Appendix A examples
+        working-directory: examples/typescript
+        run: npm run verify-spec
+
+      - name: Run WebSocket demo against mock server
+        working-directory: examples/typescript
+        run: npm run demo
+
+      - name: Run gRPC demo against mock server
+        working-directory: examples/typescript
+        run: npm run grpc-demo
+
+  python-conformance:
+    name: Python Conformance Validator
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Python vector test suite
+        run: python examples/python/run_vectors.py
+
+  go-conformance:
+    name: Go Conformance Validator
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Run Go vector test suite
+        working-directory: examples/go
+        run: go run run_vectors.go
+
+  rust-conformance:
+    name: Rust Conformance Validator
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Rust vector test suite
+        working-directory: examples/rust
+        run: cargo run --bin run_vectors

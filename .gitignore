@@ -1,0 +1,24 @@
+# Dependencies & Package Runtimes
+node_modules/
+dist/
+target/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Rust
+Cargo.lock
+examples/rust/target/
+
+# Logs & temporary files
+*.log
+scratch/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

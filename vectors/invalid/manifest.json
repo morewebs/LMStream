@@ -1,0 +1,169 @@
+{
+  "version": "1.0",
+  "category": "invalid",
+  "count": 18,
+  "vectors": [
+    {
+      "id": "invalid-length-exceeds-max",
+      "description": "Payload length field exceeds 65,527 cap",
+      "raw_hex": "010000000301f8ff00000000000000000000",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-reserved-flag-bit1",
+      "description": "Reserved header flag bit 1 (COMPRESSED) is non-zero",
+      "raw_hex": "01000000030205000074657374",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-reserved-flag-bit2",
+      "description": "Reserved header flag bit 2 is non-zero",
+      "raw_hex": "01000000030405000074657374",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-reserved-flag-bit7",
+      "description": "Reserved header flag bit 7 is non-zero",
+      "raw_hex": "01000000038005000074657374",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-unknown-core-opcode-00",
+      "description": "Reserved core opcode 0x00 received",
+      "raw_hex": "0100000000000000",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-unknown-core-opcode-20",
+      "description": "Unassigned core range opcode 0x20 received",
+      "raw_hex": "010000002000040064617461",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-unknown-core-opcode-2f",
+      "description": "Unassigned core range opcode 0x2F received",
+      "raw_hex": "010000002f00040064617461",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-data-on-stream0",
+      "description": "CONTENT frame transmitted on StreamID 0",
+      "raw_hex": "00000000030105000064617461",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-settings-on-stream1",
+      "description": "SETTINGS frame transmitted on StreamID 1",
+      "raw_hex": "010000000f00120001ffff000000001000983a00006400000000",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-settings-truncated",
+      "description": "SETTINGS payload is 17 bytes (expected 18)",
+      "raw_hex": "000000000f0011000101010101010101010101010101010101",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-usage-truncated",
+      "description": "USAGE payload is 19 bytes (expected 20)",
+      "raw_hex": "010000000600130000000000000000000000000000000000000000",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-metrics-truncated",
+      "description": "METRICS payload is 19 bytes (expected 20)",
+      "raw_hex": "010000000700130000000000000000000000000000000000000000",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-cancel-nonzero-payload",
+      "description": "CANCEL frame carries non-zero payload",
+      "raw_hex": "010000000a000d0063616e63656c5f726561736f6e",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-pause-nonzero-payload",
+      "description": "PAUSE frame carries non-zero payload",
+      "raw_hex": "010000000b00090070617573655f6e6f77",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-resume-nonzero-payload",
+      "description": "RESUME frame carries non-zero payload",
+      "raw_hex": "010000000c000a00726573756d655f6e6f77",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-error-msglen-mismatch",
+      "description": "ERROR frame MsgLen exceeds actual payload slice",
+      "raw_hex": "0100000009000d00e90390010000140068656c6c6f",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-usage-reserved-nonzero",
+      "description": "USAGE frame has non-zero Reserved byte",
+      "raw_hex": "01000000060014000a0000000a000000140000000000000001ff0000",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    },
+    {
+      "id": "invalid-rewind-reserved-nonzero",
+      "description": "REWIND frame has non-zero Reserved field",
+      "raw_hex": "010000000e0008000300ffff0a000000",
+      "expected_error": {
+        "code": 1008,
+        "scope": "connection"
+      }
+    }
+  ]
+}

@@ -1,6 +1,15 @@
-MIT License
+# Licensing
 
-Copyright (c) 2026 moreweb
+The LMStream open standard deliverables are licensed under dual licenses:
+
+- **Documentation & Specifications**: Creative Commons Attribution 4.0 International License ([CC-BY-4.0](https://creativecommons.org/licenses/by/4.0/)).
+- **Code, Tools, & Reference Implementations**: MIT License (text below).
+
+---
+
+## MIT License
+
+Copyright (c) 2026 LMStream Authors and Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

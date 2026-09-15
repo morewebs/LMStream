@@ -1,0 +1,160 @@
+{
+  "version": "1.0",
+  "category": "edge",
+  "count": 22,
+  "vectors": [
+    {
+      "id": "edge-utf8-2byte-split-p1",
+      "description": "2-byte UTF-8 char split at byte 1 (BOUNDARY=0)",
+      "raw_hex": "010000000300050000636166c3",
+      "details": {
+        "char": "\u00e9",
+        "split_index": 1
+      }
+    },
+    {
+      "id": "edge-utf8-2byte-split-p2",
+      "description": "2-byte UTF-8 char completed (BOUNDARY=1)",
+      "raw_hex": "010000000301080000a9206c61747465",
+      "details": {
+        "char": "\u00e9",
+        "split_index": 2
+      }
+    },
+    {
+      "id": "edge-utf8-3byte-split-p1",
+      "description": "3-byte UTF-8 char split at byte 1",
+      "raw_hex": "010000000300080000636f73743a20e2",
+      "details": {
+        "char": "\u20ac",
+        "split_index": 1
+      }
+    },
+    {
+      "id": "edge-utf8-3byte-split-p2",
+      "description": "3-byte UTF-8 char completed",
+      "raw_hex": "01000000030105000082ac3530",
+      "details": {
+        "char": "\u20ac",
+        "split_index": 3
+      }
+    },
+    {
+      "id": "edge-utf8-3byte-tri-1",
+      "description": "3-byte UTF-8 split across 3 frames (part 1)",
+      "raw_hex": "010000000300020000e2",
+      "details": {}
+    },
+    {
+      "id": "edge-utf8-3byte-tri-2",
+      "description": "3-byte UTF-8 split across 3 frames (part 2)",
+      "raw_hex": "01000000030002000082",
+      "details": {}
+    },
+    {
+      "id": "edge-utf8-3byte-tri-3",
+      "description": "3-byte UTF-8 split across 3 frames (part 3)",
+      "raw_hex": "010000000301020000ac",
+      "details": {}
+    },
+    {
+      "id": "edge-utf8-4byte-split-p1",
+      "description": "4-byte emoji split at byte 1",
+      "raw_hex": "010000000300020000f0",
+      "details": {
+        "char": "\ud83d\ude80",
+        "split_index": 1
+      }
+    },
+    {
+      "id": "edge-utf8-4byte-split-p2",
+      "description": "4-byte emoji split at byte 2",
+      "raw_hex": "0100000003000200009f",
+      "details": {
+        "char": "\ud83d\ude80",
+        "split_index": 2
+      }
+    },
+    {
+      "id": "edge-utf8-4byte-split-p3",
+      "description": "4-byte emoji completed at byte 4",
+      "raw_hex": "0100000003010300009980",
+      "details": {
+        "char": "\ud83d\ude80",
+        "split_index": 4
+      }
+    },
+    {
+      "id": "edge-tool-args-split-escape-p1",
+      "description": "Tool args split mid Unicode escape sequence (part 1)",
+      "raw_hex": "0100000005001100000000027b22636f6465223a225c753030",
+      "details": {}
+    },
+    {
+      "id": "edge-tool-args-split-escape-p2",
+      "description": "Tool args completing Unicode escape sequence (part 2)",
+      "raw_hex": "0100000005000800000000043431227d",
+      "details": {}
+    },
+    {
+      "id": "edge-tool-args-split-key-p1",
+      "description": "Tool args split mid JSON key token (part 1)",
+      "raw_hex": "0100000005000a00000000027b226c6f6361",
+      "details": {}
+    },
+    {
+      "id": "edge-tool-args-split-key-p2",
+      "description": "Tool args completing JSON key token (part 2)",
+      "raw_hex": "01000000050010000000000474696f6e223a224e5943227d",
+      "details": {}
+    },
+    {
+      "id": "edge-tool-empty-id-name",
+      "description": "Tool call with 0-length ID and 0-length name",
+      "raw_hex": "0100000005000900000000050000007b7d",
+      "details": {}
+    },
+    {
+      "id": "edge-boundary1-empty-payload",
+      "description": "BOUNDARY=1 frame with empty text delta",
+      "raw_hex": "010000000301010000",
+      "details": {}
+    },
+    {
+      "id": "edge-1k-boundary0-emoji-split",
+      "description": "1KB payload ending on split 4-byte emoji",
+      "raw_hex": "010000000300eb03005a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5af09f",
+      "details": {}
+    },
+    {
+      "id": "edge-tool-max-call-index",
+      "description": "Tool call with maximum 16-bit CallIndex (65,535)",
+      "raw_hex": "0100000005000f0000ffff05020400696466756e637b7d",
+      "details": {}
+    },
+    {
+      "id": "edge-content-max-choice-index",
+      "description": "CONTENT frame with maximum choice index (255)",
+      "raw_hex": "0100000003011000ff43686f696365203235352074657874",
+      "details": {}
+    },
+    {
+      "id": "edge-tool-args-surrogate-split-p1",
+      "description": "Tool args split mid surrogate pair (part 1)",
+      "raw_hex": "0100000005001400000000027b22656d6f6a69223a225c7544383344",
+      "details": {}
+    },
+    {
+      "id": "edge-tool-args-surrogate-split-p2",
+      "description": "Tool args completing surrogate pair (part 2)",
+      "raw_hex": "0100000005000c00000000045c7544453030227d",
+      "details": {}
+    },
+    {
+      "id": "edge-reasoning-empty",
+      "description": "REASONING frame with empty delta",
+      "raw_hex": "010000000401010000",
+      "details": {}
+    }
+  ]
+}
